@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="assets_backend" name="eocean_apisms assets"
+            inherit_id="web.webclient_bootstrap">
+            <xpath expr="." position="inside">
+                <!-- <link rel="stylesheet" type="text/css"
+                    href="/eocean_apisms/static/src/css/bootstrap.min.css" />
+                <script type="text/javascript" src="/eocean_apisms/static/src/js/bootstrap.min.js" /> -->
+            </xpath>
+        </template>
+        <!-- CRON -->
+        <record id="ir_cron_update_campaign_status" model="ir.cron">
+            <field name="name">Update Campaign Status</field>
+            <field name="model_id" ref="model_eoceansms_sms_campaign" />
+            <field name="user_id" ref="base.user_root" />
+            <field name="interval_number">2</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False" />
+            <field name="active" eval="True" />
+            <field name="state">code</field>
+            <field name="code">model.update_campaign_status()</field>
+        </record>
+    </data>
+</odoo>

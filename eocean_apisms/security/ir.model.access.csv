@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_eoceansms_sms_campaign,eoceansms.sms.campaign,model_eoceansms_sms_campaign,,1,1,1,1
+access_eoceansms_sms_connection,eoceansms.sms.connection,model_eoceansms_sms_connection,,1,1,1,1
+access_eoceansms_sms_register,eoceansms.sms.register,model_eoceansms_sms_register,,1,1,1,1

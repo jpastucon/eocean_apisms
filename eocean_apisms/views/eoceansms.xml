@@ -1,0 +1,270 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!-- PASARELAS -->
+
+        <!-- Nueva PASARELA -->
+        <record model="ir.ui.view" id="sms_connection_form_view">
+            <field name="name">eoceansms.sms_connection.form</field>
+            <field name="model">eoceansms.sms_connection</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Nueva Pasarela ⚙" class="container">
+                    <sheet>
+                        <h1 class="text-center mt-4">Nueva Pasarela ⚙</h1>
+                    </sheet>
+                    <sheet>
+                        <div class="form-group">
+                            <div class="form-group row">
+                                <label for="name" class="col-sm-2 col-form-label">Nombre de la
+                                    pasarela</label>
+                                <div class="col-sm-10">
+                                    <field id="name" name="name" string="Nombre"
+                                        class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="client_id" class="col-sm-2 col-form-label">Client ID</label>
+                                <div class="col-sm-10">
+                                    <field id="client_id" name="client_id" string="Client ID"
+                                        class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="client_secret" class="col-sm-2 col-form-label">Client
+                                    Secret</label>
+                                <div class="col-sm-10">
+                                    <field id="client_secret" name="client_secret"
+                                        string="Client Secret"
+                                        class="form-control" />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="access_token" class="col-sm-2 col-form-label">Access
+                                    Token</label>
+                                <div class="col-sm-10">
+                                    <field name="access_token" string="Access Token"
+                                        class="form-control"
+                                        readonly="1" />
+                                </div>
+                            </div>
+                        </div>
+
+                    </sheet>
+                    <sheet class="text-center">
+                        <button name="authenticate_gateway" string="Guardar" type="object"
+                            class="btn btn-primary btn-block" />
+                        <button string="Cancelar" special="cancel" class="btn btn-danger btn-block"
+                            context="{'force_refresh': True}" />
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Listado de PASARELAS -->
+        <record model="ir.ui.view" id="sms_connection_tree_view">
+            <field name="name">eoceansms.sms_connection.tree</field>
+            <field name="model">eoceansms.sms_connection</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree string="Listado de Pasarelas ⚙">
+                    <field name="name" string="Nombre" select="1" />
+                    <field name="access_token" string="Access Token" />
+                </tree>
+            </field>
+        </record>
+        <!-- Acciones para PASARELAS -->
+        <record model="ir.actions.act_window" id="sms_connection_action_tree">
+            <field name="name">Listado de Pasarelas</field>
+            <field name="res_model">eoceansms.sms_connection</field>
+            <field name="view_mode">form,tree</field>
+            <field name="view_id" ref="sms_connection_tree_view" />
+        </record>
+
+        <!-- CAMPAÑAS -->
+
+        <!-- Nueva CAMPAÑA -->
+        <record model="ir.ui.view" id="sms_campaign_form_view">
+            <field name="name">eoceansms.sms_campaign.form</field>
+            <field name="model">eoceansms.sms_campaign</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Nueva Campaña SMS" class="container">
+                    <sheet>
+                        <h1 class="text-center">Nueva Campaña SMS 📣</h1>
+                    </sheet>
+                    <sheet>
+                        <div class="form-group">
+                            <div class="form-group row">
+                                <label for="connection_id" class="col-sm-2 col-form-label">Seleccionar
+                                    pasarela</label>
+                                <div class="col-sm-10">
+                                    <field id="connection_id" name="connection_id"
+                                        string="Seleccionar Pasarela" select="1"
+                                        class="form-control"
+                                    />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="name" class="col-sm-2 col-form-label">Nombre de la
+                                    campaña</label>
+                                <div class="col-sm-10">
+                                    <field id="name" name="name" string="Nombre de la campaña"
+                                        class="form-control"
+                                    />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="type_action" class="col-sm-2 col-form-label">Seleccione
+                                    el
+                                    tipo de
+                                    campaña</label>
+                                <div class="col-sm-10">
+                                    <field id="type_action" name="type_action"
+                                        string="Seleccionar el Tipo de campaña"
+                                        widget="selection"
+                                        class="form-control"
+                                        options="{'selection': [('1', 'Campaña Inmediata'), ('2', 'Campaña Programada')]}"
+                                    />
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="datetime"
+                                    attrs="{'invisible': [('type_action', '=', '1')]}"
+                                    class="col-sm-2 col-form-label">Seleccione la fecha y hora</label>
+                                <div class="col-sm-10">
+                                    <field id="datetime" name="datetime" widget="datetime"
+                                        string="Seleccione la fecha y hora"
+                                        attrs="{'invisible': [('type_action', '=', '1')]}"
+                                        class="form-control"
+                                        options="{'pickerOptions': {'format': 'yyyy-mm-dd HH:ii:ss', 'showTodayButton': true}}" />
+                                    <field name="date" string="Fecha" invisible="True"></field>
+                                    <field name="time" string="Hora" invisible="True"></field>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="contacts" class="col-sm-2 col-form-label">Seleccione los
+                                    contactos</label>
+                                <div class="col-sm-10">
+                                    <field id="contacts" name="contacts" widget="many2many"
+                                        string="Contactos"
+                                        options="{'no_create': True}"
+                                        class="form-control">
+                                        <tree>
+                                            <field name="name" string="Nombre" />
+                                            <field name="phone" string="Teléfono" />
+                                            <field name="mobile" string="Móvil" />
+                                            <field name="x_studio_telefono_01" string="Teléfono 01" />
+                                            <field name="x_studio_telefono_02" string="Teléfono 02" />
+                                            <field name="x_studio_telefono_03" string="Teléfono 03" />
+                                        </tree>
+                                    </field>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label for="message" class="col-sm-2 col-form-label">Mensaje a
+                                    enviar</label>
+                                <div class="col-sm-10">
+                                    <!-- Solo letras, números y espacios en el campo. -->
+                                    <field id="message" name="message" string="Mensaje"
+                                        attrs="{'maxlength': 160, 'pattern': '^[A-Za-z0-9\s]+$'}"
+                                        class="form-control">
+                                        <widget name="textarea" options="{'count': true}" />
+                                    </field>
+                                </div>
+                            </div>
+                        </div>
+                    </sheet>
+                    <sheet class="text-center">
+                        <button name="send_campaign" string="Guardar y enviar" type="object"
+                            class="btn btn-primary btn-block" />
+                        <button string="Cancelar" special="cancel" class="btn btn-danger btn-block"
+                            context="{'force_refresh': True}" />
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- Listado de CAMPAÑAS -->
+        <record model="ir.ui.view" id="sms_campaign_tree_view">
+            <field name="name">eoceansms.sms_campaign.tree</field>
+            <field name="model">eoceansms.sms_campaign</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <tree string="Campañas SMS">
+                    <field name="campaign_id" string="ID" select="1" />
+                    <field name="datetime" string="Fecha" select="1" />
+                    <field name="name" string="Campaña" select="1" />
+                    <field name="connection_id" string="Conexión" select="1" />
+                    <field name="status" string="Estado" select="1" />
+                    <button string="Ver Registros" type="object"
+                        name="action_view_registers" />
+                </tree>
+            </field>
+        </record>
+        <!-- Acciones para CAMPAÑAS -->
+        <record model="ir.actions.act_window" id="sms_campaign_action_tree">
+            <field name="name">Campañas SMS</field>
+            <field name="res_model">eoceansms.sms_campaign</field>
+            <field name="view_mode">form,tree</field>
+            <field name="view_id" ref="sms_campaign_tree_view" />
+        </record>
+
+        <!-- REGISTROS -->
+
+        <!-- Nuevo REGISTRO -->
+        <record model="ir.ui.view" id="sms_register_form_view">
+            <field name="name">eoceansms.sms_register.form</field>
+            <field name="model">eoceansms.sms_register</field>
+            <field name="priority" eval="8" />
+            <field name="arch" type="xml">
+                <form string="Registro SMS">
+                    <!-- Campos y diseño de la vista aquí -->
+                </form>
+            </field>
+        </record>
+
+        <!-- Listado de Registros -->
+        <record model="ir.ui.view" id="sms_register_tree_view">
+            <field name="name">eoceansms.sms_register.tree</field>
+            <field name="model">eoceansms.sms_register</field>
+            <field name="arch" type="xml">
+                <tree string="Listado de Registros">
+                    <field name="id" string="ID" />
+                    <field name="name" string="Nombre" />
+                    <field name="phone" string="Teléfono" />
+                    <field name="message" string="Mensaje" />
+                    <field name="status" string="Estado" />
+                    <field name="fecha_envio" string="Fecha de Envío" />
+                    <field name="fecha_entrega" string="Fecha de Entrega" />
+                    <field name="campaign_ids" invisible="1" />
+                    <!-- <field name="campaign_ids" string="Campañas" widget="many2many_tags" /> -->
+                </tree>
+            </field>
+        </record>
+
+
+        <!-- Acciones para Listado de Registros para una CAMPAÑA -->
+        <record model="ir.actions.act_window" id="sms_register_action_tree">
+            <field name="name">Listado de Registros</field>
+            <field name="res_model">eoceansms.sms_register</field>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="sms_register_tree_view" />
+        </record>
+
+
+        <!-- MENUS -->
+        <menuitem name="EOcean - Touch" id="menu_eocean" sequence="10"
+            groups="base.group_user"
+            web_icon="eocean,static/description/icon.png"
+            action="sms_campaign_action_tree"
+        />
+
+        <menuitem name="⚙ Pasarelas" id="menu_sms_connection" parent="menu_eocean"
+            action="sms_connection_action_tree" sequence="1" />
+
+        <menuitem name="📣 Campañas SMS" id="menu_sms_campaign" parent="menu_eocean"
+            action="sms_campaign_action_tree"
+            sequence="2" />
+
+
+    </data>
+</odoo>
